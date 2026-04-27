@@ -81,7 +81,11 @@ python3 results.py
 
 -Prints accuracy, precision, recall and F1-score
 
-
+## Supporting Scholarly Articles
+Anomaly Detection of Medical IoT Traffic Using Machine Learning
+https://www.scitepress.org/Papers/2023/121320/121320.pdf
+MalIoT: Scalable and Real-time Malware Traffic Detection for IoT Networks
+https://arxiv.org/pdf/2304.00623
 
 
 
