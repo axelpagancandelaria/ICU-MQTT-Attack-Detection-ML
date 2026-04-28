@@ -12,13 +12,17 @@ ICU-MQTT-Attack-Detection-ML/
 │ ├── icu_normal.csv
 │ ├── icu_flood_attack.csv
 │ ├── icu_slowite_attack.csv
+│ ├── icu_combined_labeled.csv
 │ ├── icu_ml_ready.csv
 │
 ├── Data-Processing-Pipeline/
 │ ├── combine_labels.py
 │ ├── prepare_features.py
 │ ├── train_RandomForest.py
-│ ├── results.py
+│
+├── results/
+│ ├── result_summary.txt
+│ ├── feature_importances.csv
 │
 └── README.md
 
@@ -57,8 +61,8 @@ Step 2: Combine and Label Data
 python3 combine_labels.py
 
 -This labels data as normal or malicious
--Loads CDV files from Traffic_Data_Sets
--Combines all datasets into one icu_ml_ready.csv
+-Loads CSV files from Traffic_Data_Sets
+-Combines all rows into icu_combined_labeled.csv
 
 
 Step 3: Prepare Features
@@ -66,18 +70,17 @@ python3 prepare_features.py
 
 -Cleans the data set
 -Converts fields into features for ML
+-Fills in the missing values
+-Saves the dataset into icu_ml_ready.csv
 
 
 Step 4: Train the Model
 python3 train_RandomForest.py
 
+-Loads icu_ml_ready.csv
 -Splits data into train/test
 -Trains Random Forest Classifier
 -Analyizes performance
-
-
-Step 5: View Results
-python3 results.py
 
 -Prints accuracy, precision, recall and F1-score
 
