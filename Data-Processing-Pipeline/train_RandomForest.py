@@ -2,6 +2,7 @@
 #dataset. It then prints the model accuracy and a confusion matrix
 #with a report.
 
+import joblib
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
@@ -49,3 +50,12 @@ print(classification_report(y_test, y_pred))
 importances = pd.Series(rf.feature_importances_, index=X.columns).sort_values(ascending=False)
 print("\nTop Feature Importances:")
 print(importances.head(10))
+
+# Save the trained model and feature column order
+model_data = {
+    "model": rf,
+    "feature_columns": list(X.columns),
+    "label_map": {0: "flood", 1: "normal", 2: "slowite_like"}
+}
+joblib.dump(model_data, "../Traffic_Data_Sets/rf_model.joblib")
+print("\nSaved trained model to ../Traffic_Data_Sets/rf_model.joblib")
