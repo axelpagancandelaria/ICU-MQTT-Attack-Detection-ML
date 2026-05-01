@@ -86,6 +86,172 @@ python3 train_RandomForest.py
 
 --
 
+## 🤖 LLM Evaluation (Claude, Nova, GPT-5.4 Mini)
+
+In addition to the traditional ML pipeline, this project evaluates how well Large Language Models (LLMs) can classify IoT network traffic attacks using summarized CSV data.
+
+Instead of training LLMs directly, they are used as **zero-shot classifiers**, where each model is given structured traffic information and asked to determine the attack type.
+
+---
+
+### 🧠 Models Used
+
+* **Claude (Anthropic via AWS Bedrock)**
+  Strong reasoning and natural language understanding.
+
+* **Nova (AWS Bedrock native models)**
+  Cost-efficient and scalable AWS-native model.
+
+* **GPT-5.4 Mini (OpenAI)**
+  Lightweight, fast, and low-cost model for batch classification.
+
+---
+
+### 📁 LLM Pipeline Files
+
+All LLM-related scripts and datasets are located in:
+
+```
+Traffic_Data_Sets/
+```
+
+#### Scripts
+
+* `bedrock_batch_test.py` → Runs batch classification using Claude (Bedrock)
+* `bedrock_batch_test_nova.py` → Runs batch classification using Nova (Bedrock)
+* `batch_test_gpt_5_4_mini.py` → Runs batch classification using GPT-5.4 Mini
+* `evaluate_llm.py` → Evaluates model predictions (accuracy, confusion matrix)
+
+#### Datasets
+
+* `icu_combined_labeled.csv` → Fully labeled dataset used for LLM evaluation
+* `icu_ml_ready.csv` → Processed feature dataset
+* `icu_normal.csv` → Normal traffic data
+* `icu_flood_attack.csv` → Flood attack data
+* `icu_slowite_attack.csv` → SlowITe-like attack data
+
+---
+
+### 🧾 Prompt Format
+
+All models use the same prompt structure for consistency:
+
+```text
+You are a cybersecurity analyst.
+
+Classify the following network traffic:
+
+- Packet Count: {packet_count}
+- Avg Packet Size: {avg_size}
+- Connection Duration: {duration}
+
+Answer with one word only:
+normal, flood, or slowite_like
+```
+
+---
+
+### 🔄 Pipeline Integration
+
+```text
+PCAP → CSV → Labeling → Feature Prep → Random Forest (Baseline)
+                                          ↓
+                                LLM Evaluation
+                  (Claude + Nova + GPT-5.4 Mini)
+```
+
+---
+
+## 🚀 How to Run the LLM Pipeline
+
+### Step 1 — Navigate to Folder
+
+```bash
+cd Traffic_Data_Sets
+```
+
+---
+
+### Step 2 — Run LLM Batch Tests
+
+**Claude (Bedrock):**
+
+```bash
+python bedrock_batch_test.py
+```
+
+**Nova (Bedrock):**
+
+```bash
+python bedrock_batch_test_nova.py
+```
+
+**GPT-5.4 Mini (OpenAI):**
+
+```bash
+python batch_test_gpt_5_4_mini.py
+```
+
+Each script processes the dataset and generates prediction outputs.
+
+---
+
+### Step 3 — Evaluate Results
+
+```bash
+python evaluate_llm.py
+```
+
+This script compares predicted labels against ground truth and outputs:
+
+* Accuracy
+* Confusion matrix
+* Model comparison metrics
+
+---
+
+### 📊 Evaluation Goal
+
+The objective is to compare LLM performance against the Random Forest baseline by measuring:
+
+* Classification accuracy
+* Consistency of predictions
+* Ability to distinguish between attack types using summarized data
+
+---
+
+### 🔑 Setup Requirements
+
+**AWS (Claude + Nova):**
+
+```bash
+aws configure
+```
+
+* Region: `us-east-1`
+* Bedrock access must be enabled
+
+**OpenAI (GPT-5.4 Mini):**
+
+Windows PowerShell:
+
+```powershell
+setx OPENAI_API_KEY "your_api_key"
+```
+
+Mac/Linux:
+
+```bash
+export OPENAI_API_KEY="your_api_key"
+```
+
+---
+
+### 📌 Key Insight
+
+This section evaluates whether LLMs can accurately classify IoT-based cyberattacks using only summarized traffic features and compares their performance against traditional machine learning approaches in terms of accuracy, scalability, and interpretability.
+
+
 ## 📚Supporting Scholarly Articles
 Anomaly Detection of Medical IoT Traffic Using Machine Learning
 https://www.scitepress.org/Papers/2023/121320/121320.pdf
